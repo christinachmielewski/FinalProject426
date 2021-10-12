@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+<style>
+h1  {
+	color: deepskyblue;
+	text-align: center;
+	padding: 30px 15 px;
+}
+html {
+background: rgb(249,252,252);
+background: linear-gradient(90deg, rgba(249,252,252,1) 0%, rgba(32,240,238,1) 37%, rgba(135,219,240,1) 70%, rgba(0,212,255,1) 100%);
+}
+</style>
+    <head>
+        <title>Geocoding Service</title> 
+    </head>
+    <body>
+    <h1> Use the Google Maps/Geocoding API to drop pins of Kenan Stadium and your location to see directions! </h1>
+        <div id="floating-panel">
+            <input id="inputAddress" type="text" value="Kenan Stadium" />
+            <input id="submitButton" type="button" value="Geocode the Address" />
+            <p> </p>
+        </div>
+
+        <div id="mapContainer" style="height: 400px;width: 900px;"></div>
+        
+        <script async="true" defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD03ECIp84WRiFGjsnaT7gJLwcS_H2GDvo&callback=newMap" type=""></script>
+
+
+        <script>
+            function newMap() {
+                const map = new google.maps.Map(document.getElementById("mapContainer"), {
+                    zoom: 6,
+                    center: {
+                        lat: 35.9070,
+                        lng: -79.0479
+                    }
+                });
+
+                var gc = new google.maps.Geocoder();
+                document.getElementById("submitButton").addEventListener("click", () => {placeAddyOnMap(gc, map);});
+            }
+            
+            function placeAddyOnMap(geocoder, output) {
+            	
+                var addy = document.getElementById("inputAddress").value;
+                geocoder.geocode({address: addy}, (results, status) => {
+                        if (status === "OK") {
+                            output.setCenter(results[0].geometry.location);
+                            new google.maps.Marker({
+                                map: output, 
+                                position: results[0].geometry.location,
+                            });
+                   		 } else {
+                   	        alert("POSSIBLE ERROR: " + status);
+                   	    } 
+                        
+                	})
+                };
+        </script>
+    </body>
+</html>

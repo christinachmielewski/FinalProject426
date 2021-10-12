@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html>
+
+
+<style>
+h1  {
+	color: deepskyblue;
+	text-align: center;
+	padding: 30px 15 px;
+}
+
+html {
+background: rgb(249,252,252);
+background: linear-gradient(90deg, rgba(249,252,252,1) 0%, rgba(32,240,238,1) 37%, rgba(135,219,240,1) 70%, rgba(0,212,255,1) 100%);
+}
+
+
+</style>
+
+<h1>UNC Sports Trivia Game</h1>
+<title>Trivia Game</title> 
+ <body>
+ <p> Answer as many questions correctly as you can! </p>
+ <p> Each question is worth 10 points, for a total of 40 per game.</p>
+
+  <p> Trivia Options </p>
+  <ol>
+  <li>Mens Basketball</li>
+  <li>Womens Basketball</li>
+  <li>Mens Soccer</li>
+  <li>Womens Soccer</li>
+  <li>Field Hockey</li>
+  </ol>
+  <p>Enter your choice in the box below</p>
+
+</body>
+
+<script type="text/javascript">
+    var tags = [ "Mens Basketball", "Womens Basketball", "Mens Soccer",
+    "Womens Soccer", "Field Hockey"];
+   
+     function ac(value) {
+        document.getElementById('datalist').innerHTML = '';
+
+     for (var i = 0; i<tags.length; i++) {
+         if(((tags[i].toLowerCase()).indexOf(value.toLowerCase()))>-1){
+               var node = document.createElement("option");
+               var nodeData = document.createTextNode(tags[i]);
+               node.appendChild(nodeData);
+               document.getElementById("datalist").appendChild(node);
+             }
+         }
+     }
+</script>
+<input type="text" list="datalist" id="Sport Chosen" onkeyup="ac(this.value)">
+<datalist id="datalist">
+  
+<option value="Mens Basketball"></option>
+<option value="Womens Basketball"></option>
+<option value="Mens Soccer"></option>
+<option value="Womens Soccer"></option>
+<option value="Field Hockey"></option>
+  
+</datalist>
+<input type="submit" value="Submit" onclick="getChoice()"/><br>
+
+<script> 
+var currScore = 0;
+var confWins1 = {
+		"Mens Basketball":26,
+		"Womens Basketball": 9,
+		"Mens Soccer": 3,
+		"Womens Soccer": 22,
+		"Field Hockey":18
+	} 
+var NCAA_appearances = {
+		"Mens Basketball":51,
+		"Womens Basketball":12 ,
+		"Mens Soccer": 27,
+		"Womens Soccer": 39,
+		"Field Hockey":36
+}
+var NCAA_ff_or_semi = {
+		"Mens Basketball":20,
+		"Womens Basketball": 3,
+		"Mens Soccer": 13,
+		"Womens Soccer": 4,
+		"Field Hockey":11
+}
+var NCAA_win = {
+		"Mens Basketball":6,
+		"Womens Basketball": 1,
+		"Mens Soccer": 2,
+		"Womens Soccer": 21,
+		"Field Hockey":9
+}
+	
+function getChoice(){
+	var sportChosen = retrieveText("Sport Chosen");
+	displayText("Ready to begin trivia? Click the button below to get started!");
+	var button = document.createElement("startbutton");
+	button.innerHTML = '<button type="button" onclick=eval_q1()>Start Game</button>';
+	document.body.appendChild(button);
+	
+}
+function displayText(message){
+	  var p = document.createElement('p');
+	  p.innerHTML = String(message);
+	  document.body.appendChild(p);
+}
+function retrieveText(id){
+	return document.getElementById(id).value;
+}
+function eval_q1() {
+	var sportChosen = retrieveText("Sport Chosen");
+	displayText("How many conference championships has UNC " + sportChosen + " had?");
+
+	var guessButton1 = document.createElement('guessButton1');
+	guessButton1.innerHTML = '<input type="number" id="Q1 Guess">';
+	document.body.appendChild(guessButton1);
+	var submitButton = document.createElement('submitButton');
+	submitButton.innerHTML = '<button type="button" onclick=eval_q2() >Enter</button>'
+	document.body.appendChild(submitButton);
+	
+}
+function eval_q2() {
+	var sportChosen = retrieveText("Sport Chosen");
+	var q1_eval = retrieveText("Q1 Guess") == confWins1[sportChosen];
+	if(q1_eval == true) {
+		currScore+=10 ;
+		displayText("Correct!");
+	} else{
+		displayText("Incorrect :(");
+	}
+	displayText("How many NCAA tournament appearances has UNC " + sportChosen + " had?" );
+	
+	var guessButton2 = document.createElement('guessButton2');
+	guessButton2.innerHTML = '<input type="number" id="Q2 Guess">';
+	document.body.appendChild(guessButton2);
+	var submitButton = document.createElement('submitButton');
+	submitButton.innerHTML = '<button type="button" onclick=eval_q3() >Enter</button>'
+	document.body.appendChild(submitButton);
+}
+
+function eval_q3() {
+	var sportChosen = retrieveText("Sport Chosen");
+	console.log(currScore);
+	var q2_eval = retrieveText("Q2 Guess") == NCAA_appearances[sportChosen];
+	if(q2_eval == true) {
+		currScore+=10 ;
+		displayText("Correct!");
+	} else{
+		displayText("Incorrect :(");
+	}
+	displayText("How many NCAA tournament semifinals has UNC " + sportChosen + " attended?");
+	
+	var guessButton3 = document.createElement('guessButton');
+	guessButton3.innerHTML = '<input type="number" id="Q3 Guess">';
+	document.body.appendChild(guessButton3);
+	var submitButton = document.createElement('submitButton');
+	submitButton.innerHTML = '<button type="button" onclick=eval_q4() >Enter</button>'
+	document.body.appendChild(submitButton);
+}
+
+function eval_q4() {
+	var sportChosen = retrieveText("Sport Chosen");
+	console.log(currScore);
+	var q3_eval = retrieveText("Q3 Guess") == NCAA_ff_or_semi[sportChosen];
+	if(q3_eval == true) {
+		currScore+=10 ;
+		displayText("Correct!");
+	} else{
+		displayText("Incorrect :(");
+	}
+	displayText("How many NCAA championships has " + sportChosen + " won?");
+	
+	var guessButton4 = document.createElement('guessButton');
+	guessButton4.innerHTML = '<input type="number" id="Q4 Guess">';
+	document.body.appendChild(guessButton4);
+	var submitButton = document.createElement('submitButton');
+	submitButton.innerHTML = '<button type="button" onclick=finishGame() >Enter</button>'
+	document.body.appendChild(submitButton);
+}
+
+function finishGame() {
+	var sportChosen = retrieveText("Sport Chosen");
+	var q4_eval = retrieveText("Q4 Guess") == NCAA_win[sportChosen];
+	if(q4_eval == true) {
+		currScore+=10 ;
+		displayText("Correct!");
+	} else{
+		displayText("Incorrect :(");
+	}
+	displayText("Click the button below to calculate your final score");
+	var submitButton = document.createElement('submitButton');
+	submitButton.innerHTML = '<button type="button" onclick=calcScore() >Enter</button>'
+	document.body.appendChild(submitButton);
+}
+
+function calcScore() {
+	var percent = (currScore/40)*100;
+	displayText("Your final score was: " + currScore + " points, or "+ percent+ " %!");
+	displayText("Trivia will now reload so you can play again with a new sport!");
+	window.setTimeout(function(){location.reload()},4000);
+}
+
+
+</script>

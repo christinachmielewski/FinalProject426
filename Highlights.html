@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<style>
+html {
+background: rgb(249,252,252);
+background: linear-gradient(90deg, rgba(249,252,252,1) 0%, rgba(32,240,238,1) 37%, rgba(135,219,240,1) 70%, rgba(0,212,255,1) 100%);
+}
+h1  {
+	color: deepskyblue;
+	text-align: center;
+	padding: 30px 15 px;
+}
+</style>
+<h1>GSU Panthers at UNC Tarheels Highlights (using Youtube API)</h1>
+<title>GSU at UNC Highlights</title> 
+  <body>
+    <div id="player"></div>
+
+    <script>
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '300',
+          width: '600',
+          videoId: 'l975z7pO1Dk',
+          playerVars: {
+            'playsinline': 1
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 10000);
+          done = true;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+    </script>
+  </body>
+</html>
